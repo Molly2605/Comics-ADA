@@ -1,11 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <title>ADA Comics</title>
-</head>
-<body>
-    
-</body>
+  </head>
+
+  <body class="bg-gray-100">
+    <!--BANNER-->
+    <div class="w-full">
+      <div class="relative w-full h-96">
+        <img
+          src="./assets/img/marvel-logo.jpg"
+          alt="imagen marvel comics"
+          class="w-full h-96 object-cover"
+        />
+      </div>
+    </div>
+
+    <!--MAIN-->
+    <main
+      class="w-5/6 mx-auto flex flex-col justify-center items-center font-extrabold"
+    >
+      <div class="w-full flex flex-col">
+        <div class="w-full flex flex-col items-start">
+          <h2 class="text-xl py-8">Búsqueda</h2>
+          <div class="relative inline-block w-full">
+            <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+            <input
+              class="w-full h-8 pl-7 border-none outline-none border-b-2 border-black text-xl"
+              type="text"
+              name="input-search"
+              placeholder="Ingresá tu búsqueda"
+            />
+          </div>
+        </div>
+        <div class="w-full flex justify-end items-end">
+          <div class="flex items-center">
+            <div>
+              <label class="text-sm font-extrabold text-gray-600">TIPO</label>
+              <select class="border-none outline-none font-extrabold">
+                <option value="comics">COMICS</option>
+                <option value="characters">PERSONAJES</option>
+              </select>
+            </div>
+            <div>
+              <label for="order" class="text-sm font-extrabold text-gray-600"
+                >ORDEN</label
+              >
+              <select
+                name="search-filter"
+                class="border-none outline-none font-extrabold"
+              >
+                <option value="a-z" id="a-z">A-Z</option>
+                <option value="z-a" id="z-a">Z-A</option>
+                <option value="byNewer">Más nuevos</option>
+                <option value="byOlder">Más viejos</option>
+              </select>
+            </div>
+          </div>
+          <div class="w-full flex justify-center mt-5">
+            <button
+              class="bg-black text-white p-4 border-none rounded-sm mb-5 flex items-center cursor-pointer"
+            >
+              BUSCAR
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col">
+        <h3 class="text-2xl py-8">Resultados</h3>
+        <h4 class="text-sm font-extrabold text-gray-600">RESULTADOS</h4>
+      </div>
+
+      <!--CARD-->
+      <section>
+        <div class="w-full flex flex-col mt-1"></div>
+        <div
+          class="flex flex-col justify-around items-center w-full my-5 gap-6"
+        ></div>
+      </section>
+
+      <!--PAGINATION-->
+      <section class="w-full flex flex-col mt-10">
+        <button
+          class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-[#520000] hidden"
+          onclick="goBack()"
+        >
+          Volver
+        </button>
+        <div class="flex gap-2.5">
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        <div class="flex flex-row justify-center gap-1.5">
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button
+            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+          >
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        <div class="flex flex-col gap-2.5 mt-2.5 items-start">
+          <p class="text-xs font-extrabold text-gray-600">PÁGINA ACTUAL</p>
+          <p class="text-xs font-extrabold text-gray-600">PÁGINAS TOTALES</p>
+          <div>
+            <input type="number" class="w-1/3" placeholder="Página nro." />
+            <button
+              class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            >
+              Ir a la página
+            </button>
+          </div>
+        </div>
+      </section>
+      <div
+        class="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-300 bg-opacity-80 flex items-center justify-center text-center hidden"
+      >
+        <i class="fas fa-spider"></i>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-red-500 to-black text-white-lg p-8">
+      <p
+        class="font-marvel text-white text-center text-base text-xl font-extrabold"
+      >
+        HECHO POR MOLLY
+      </p>
+    </footer>
+
+    <!-- JS -->
+    <script src="main.js"></script>
+  </body>
 </html>
