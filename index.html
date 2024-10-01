@@ -26,38 +26,40 @@
     </div>
 
     <!--MAIN-->
-    <main
-      class="w-5/6 mx-auto flex flex-col justify-center items-center font-extrabold"
-    >
+    <main class="w-full max-w-5xl mx-auto px-2.5 box-border">
       <div class="w-full flex flex-col">
-        <div class="w-full flex flex-col items-start">
-          <h2 class="text-xl py-8">Búsqueda</h2>
-          <div class="relative inline-block w-full">
-            <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-            <input
-              class="w-full h-8 pl-7 border-none outline-none border-b-2 border-black text-xl"
-              type="text"
-              name="input-search"
-              placeholder="Ingresá tu búsqueda"
-            />
-          </div>
+        <h2 class="text-2xl py-8 font-extrabold">Búsqueda</h2>
+        <div class="relative inline-flex items-center w-full">
+          <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+          <input
+            class="w-1/2 h-8 p-7 outline-none border-b-2 border-black text-xl bg-gray-100"
+            type="text"
+            name="input-search"
+            placeholder="Ingresá tu búsqueda"
+          />
+          <button
+            class="bg-black text-white p-3 border-none rounded-sm mb-5 text-xl cursor-pointer hover:bg-red-800 ml-10"
+          >
+            BUSCAR
+          </button>
         </div>
-        <div class="w-full flex justify-end items-end">
+
+        <div class="flex items-end p-7">
           <div class="flex items-center">
             <div>
-              <label class="text-sm font-extrabold text-gray-600">TIPO</label>
-              <select class="border-none outline-none font-extrabold">
+              <label class="text-xl font-extrabold text-gray-500 ml-5">TIPO</label>
+              <select class="text-xl border-none outline-none font-extrabold ml-2">
                 <option value="comics">COMICS</option>
                 <option value="characters">PERSONAJES</option>
               </select>
             </div>
             <div>
-              <label for="order" class="text-sm font-extrabold text-gray-600"
+              <label for="order" class="text-xl font-extrabold text-gray-500 ml-10"
                 >ORDEN</label
               >
               <select
                 name="search-filter"
-                class="border-none outline-none font-extrabold"
+                class="text-xl border-none outline-none font-extrabold ml-2"
               >
                 <option value="a-z" id="a-z">A-Z</option>
                 <option value="z-a" id="z-a">Z-A</option>
@@ -66,18 +68,11 @@
               </select>
             </div>
           </div>
-          <div class="w-full flex justify-center mt-5">
-            <button
-              class="bg-black text-white p-4 border-none rounded-sm mb-5 flex items-center cursor-pointer"
-            >
-              BUSCAR
-            </button>
-          </div>
         </div>
       </div>
 
       <div class="w-full flex flex-col">
-        <h3 class="text-2xl py-8">Resultados</h3>
+        <h3 class="text-2xl py-8 font-extrabold">Resultados</h3>
         <h4 class="text-sm font-extrabold text-gray-600">RESULTADOS</h4>
       </div>
 
@@ -92,51 +87,51 @@
       <!--PAGINATION-->
       <section class="w-full flex flex-col mt-10">
         <button
-          class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-[#520000] hidden"
+          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center hidden"
           onclick="goBack()"
         >
           Volver
         </button>
         <div class="flex gap-2.5">
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-angle-double-left"></i>
           </button>
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-chevron-left"></i>
           </button>
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-chevron-right"></i>
           </button>
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-angle-double-right"></i>
           </button>
         </div>
         <div class="flex flex-row justify-center gap-1.5">
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-angle-double-left"></i>
           </button>
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-chevron-left"></i>
           </button>
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-chevron-right"></i>
           </button>
           <button
-            class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center"
           >
             <i class="fas fa-angle-double-right"></i>
           </button>
@@ -147,7 +142,7 @@
           <div>
             <input type="number" class="w-1/3" placeholder="Página nro." />
             <button
-              class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-dark-red"
+              class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-red-800"
             >
               Ir a la página
             </button>
