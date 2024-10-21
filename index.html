@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="assets/img/head-marvel-icon.png" type="image">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
@@ -21,12 +22,12 @@
   </div>
 
   <!--MAIN-->
-  <main class="w-full max-w-5xl mx-auto px-2.5 box-border">
-    <div class="w-full flex flex-col">
+  <main>
+    <div class="container mx-auto p-4">
       <h2 class="text-2xl py-8 font-extrabold">Búsqueda</h2>
       <div class="relative inline-flex items-center w-full">
         <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-        <input class="w-1/2 h-8 p-7 outline-none border-b-2 border-black text-xl bg-gray-100" type="text"
+        <input class="w-full md:w-1/2 h-8 p-7 outline-none border-b-2 border-black text-xl bg-gray-100" type="text"
           name="input-search" placeholder="Ingresá tu búsqueda" id="input-search" />
         <button id="search-button"
           class="bg-black text-white p-3 border-none rounded-sm mb-5 text-xl cursor-pointer hover:bg-red-800 ml-10">
@@ -34,7 +35,7 @@
         </button>
       </div>
 
-      <div class="flex items-end p-7">
+      <div class="flex flex-col md:flex-row items-center justify-start md:space-x-8 mb-6">
         <div class="flex items-center">
           <div>
             <label class="text-xl font-extrabold text-gray-500 ml-5">TIPO</label>
@@ -43,7 +44,7 @@
               <option value="characters">PERSONAJES</option>
             </select>
           </div>
-          <div>
+          <div class="flex items-center mt-4 md:mt-0">
             <label for="order" class="text-xl font-extrabold text-gray-500 ml-10">ORDEN</label>
             <select name="search-filter" class="text-xl border-none outline-none font-extrabold ml-2" id="search-sort">
               <option value="a-z" id="a-z">A-Z</option>
@@ -54,80 +55,75 @@
           </div>
         </div>
       </div>
+      <div class="w-full flex flex-col">
+        <h3 class="text-2xl py-8 font-extrabold">Resultados</h3>
+        <h4 class="text-sm font-extrabold text-gray-600">RESULTADOS</h4>
+      </div>
     </div>
 
-    <div class="w-full flex flex-col">
-      <h3 class="text-2xl py-8 font-extrabold">Resultados</h3>
-      <h4 class="text-sm font-extrabold text-gray-600">RESULTADOS</h4>
-    </div>
 
     <!--PAGINATION-->
-    <section class="w-full flex flex-col mt-10">
-      <button id="btn-goBack"
-        class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center hidden"
-        onclick="goBack()">
-        Volver
-      </button>
+    <section class="w-full flex flex-col container mx-auto p-4">
+      <section class="w-full flex flex-col mt-10 container mx-auto p-4">
+        <div class="flex gap-2.5 justify-center">
+          <button id="btn-first-page"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
 
-      <div class="flex gap-2.5">
-        <button id="btn-first-page"
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-angle-double-left"></i>
-        </button>
+          <button id="btn-prev-page"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+            <i class="fas fa-chevron-left"></i>
+          </button>
 
-        <button id="btn-prev-page"
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-chevron-left"></i>
-        </button>
 
-        <button id="btn-next-page"
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-chevron-right"></i>
-        </button>
+          <span id="current-page" class="text-black font-extrabold mx-4 justify-center p-5">PÁGINA 1</span>
 
-        <button id="btn-last-page"
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-angle-double-right"></i>
-        </button>
-      </div>
 
-    <!--CARD-->
-    <section>
-      <div id="comics" class="w-full flex flex-col mt-1">
-      <div id="comic-container" class="flex flex-wrap gap-4 justify-center">
-    </section>
+          <button id="btn-next-page"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+            <i class="fas fa-chevron-right"></i>
+          </button>
 
-      <div class="flex flex-row justify-center gap-1.5">
-        <button
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-angle-double-left"></i>
-        </button>
-
-        <button
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-
-        <button
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-
-        <button
-          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
-          <i class="fas fa-angle-double-right"></i>
-        </button>
-      </div>
-
-      <div class="flex flex-col gap-2.5 mt-2.5 items-start">
-        <p class="text-xs font-extrabold text-gray-600">PÁGINA ACTUAL</p>
-        <p class="text-xs font-extrabold text-gray-600">PÁGINAS TOTALES</p>
-        <div>
-          <input type="number" class="w-1/3" placeholder="Página nro." />
-          <button class="bg-black text-white p-4 border-none rounded-sm mb-5 cursor-pointer hover:bg-red-800">
-            Ir a la página
+          <button id="btn-last-page"
+            class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+            <i class="fas fa-angle-double-right"></i>
           </button>
         </div>
+      </section>
+
+
+      <!--COMICS y PERSONAJES-->
+      <section>
+        <div id="comics">
+          <div id="comic-container" class="flex flex-wrap gap-7 justify-center"></div>
+          <div id="personajes-container" class="flex flex-wrap gap-7 justify-center"></div>
+        </div>
+      </section>
+      <!--FIN COMICS y PERSONAJES-->
+      
+      <div class="flex flex-row justify-center mt-10 container mx-auto p-4 gap-1.5">
+        <button id="btn-first-page-bottom"
+          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+
+        <button id="btn-prev-page-bottom"
+          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <span id="current-page-bottom"class="text-black font-extrabold mx-4 justify-center p-5">PÁGINA 1 </span>
+
+        <button id="btn-next-page-bottom"
+          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <button id="btn-last-page-bottom"
+          class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
       </div>
     </section>
     <div
