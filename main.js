@@ -15,164 +15,364 @@ fetch(urlApi + urlPersonajes + paramAutenticacion, {
   .then((data) => console.log(data))
   .catch((error) => console.error(error));
 
-const response = [
-  {
-    title: "The Incredible Hulk",
-    year: 2008,
-    rating: [{ name: "Hulk" }],
-  },
-];
-
-fetch(urlApi + urlPersonajes + paramAutenticacion, {
-  method: "GET",
-  headers: {
-    "Content-type": "application/json",
-  },
-})
-  .then((response) => response.json())
-  .then((info) => {
-    data_personaje = info.data.results;
-    return infoPersonaje(data_personaje);
-  })
-  .catch((error) => console.error(error));
-
-function infoPersonaje(data_personaje) {
-  function infoComic(comic_id) {
-    fetch(
-      `${urlApi}/v1/public/comics/${comic_id}?ts=IronMan&apikey=${publicKey}&hash=${hash}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((info) => {
-        console.log(info.data.results);
-      })
-      .catch((error) => console.error(error));
-  }
-}
 
 
+const personajesContainer = document.getElementById('personajes-container');
+const comicsContainer = document.getElementById('comic-container');
 
 
-let resource = "comics" || "characters";
-let limit = 20;
-let title = "";
-let characterName = "";
-let offset = 0;
-const resultsPerPage = 20;
-let currentPage = 1
-let totalPages = 1;
-let detailCharacter;
-
-const getSearchParameters = () => {
-  return {
-    searchTerm: $("#input-search").value,
-    typeSelected: $("#search-type").value,
-    searchSort: $("#search-sort").value,
-  };
-};
-
-//Hide options select
-const manageOptions = () => {
-  if ($("#search-type").value === "characters") {
-    hideElement(["#byNewer", "#byOlder"])
-  } else {
-    showElement(["#a-z", "#z-a", "#byNewer", "#byOlder"])
-  }
-}
-
-
-const updateDisabledProperty = () => {
-
-  if (offset > 0) {
-    $("#btn-prev-page").disabled = false;
-    $("#btn-first-page").disabled = false;
-  } else {
-    $("#btn-prev-page").disabled = true;
-    $("#btn-first-page").disabled = true;
-  }
-
-  if (offset < (totalPages - 1) * resultsPerPage) {
-    $("#btn-next-page").disabled = false;
-    $("#btn-last-page").disabled = false;
-  } else {
-    $("#btn-next-page").disabled = true;
-    $("#btn-last-page").disabled = true;
-  }
-};
-
-const initializeApp = async () => {
-  await renderApiResults("comics", "", "a-z", 20, 0);
-  await renderTotalResults("comics", "", "a-z", 20, 0);
-  updateDisabledProperty();
-  //Events
-  //Btn search
-  $("search-button").addEventListener("click", searchFunction);
-}
-
-
-const resultsContainer = document.getElementById('results'); // Contenedor de resultados de búsqueda
-const comicsContainer = document.getElementById(' comics-container'); // Contenedor de cómics
-
-//funciones de navegacion
-function mostrarComics() {
+/*NAVEGACION COMICS - PERSONAJES*/
+function mostrarPantallaComics(){
   comicsContainer.classList.remove('hidden');
-  }
-  
+  personajesContainer.classList.add('hidden');
+};
 
-// Función para buscar personajes
-async function searchCharacters(name) {
-  const url = `${urlApi}/v1/public/characters?nameStartsWith=${name}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
-  
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    displayCharacters(data.data.results); // Mostrar resultados
-  } catch (error) {
-    console.error('Error fetching characters:', error);
-  }
+
+function mostrarPantallaPersonajes(){
+comicsContainer.classList.add('hidden');
+personajesContainer.classList.remove('hidden');
 }
 
-// Mostrar personajes en la página
-function displayCharacters(characters) {
-  resultsContainer.innerHTML = ''; // Limpiar resultados anteriores
-  characters.forEach(character => {
-    const characterElement = document.createElement('div');
-    characterElement.classList.add('character');
-    characterElement.textContent = character.name;
-    characterElement.addEventListener('click', () => showComics(character.id)); // Click para mostrar cómics
-    resultsContainer.appendChild(characterElement);
-  });
-}
 
-// Función para mostrar los cómics de un personaje específico
-async function showComics(characterId) {
-  const url = `${urlApi}/v1/public/characters/${characterId}/comics?ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
+
+/*Consigo Comics*/
+const getComics = () => {
+  const urlComics = `${urlApi}/v1/public/comics?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=20`;
+
+  fetch(urlComics, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const comics = data.data.results;
+      displayComics(comics);
+    })
+    .catch((error) => console.error('Error fetching comics:', error));
+};
+
+const displayComics = (comics) => {
+  comicsContainer.innerHTML = '';
   
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data)
-    displayComics(data.data.results); // Mostrar cómics
-  } catch (error) {
-    console.error('Error fetching comics:', error);
-  }
-}
 
-// Mostrar cómics en la página
-function displayComics(comics) {
-  comicsContainer.innerHTML = ''; // Limpiar cómics anteriores
   comics.forEach(comic => {
-    const comicElement = document.createElement('div');
-    comicElement.classList.add('comic');
-    comicElement.innerHTML = `
-      <img src="${comic.thumbnail.path}.${comic.thumbnail.extension}" alt="${comic.title}" />
-      <h3>${comic.title}</h3>
-    `;
-    comicsContainer.appendChild(comicElement);
+    const comicHTML = `
+    <div class="rounded-lg w-60 overflow-hidden text-black transition-transform duration-300 ease-in-out hover:text-red-500 transform hover:scale-105">
+  <img class="w-auto h-96 object-cover shadow-2xl hover:shadow-2xl transition-transform duration-300 ease-in-out cursor-pointer" src="${comic.thumbnail.path}.${comic.thumbnail.extension}">
+  <h2 class="mt-8 text-sm font-bold text-center">${comic.title}</h2>
+</div>
+
+      `;
+    comicsContainer.insertAdjacentHTML('beforeend', comicHTML);
   });
-}
+};
+getComics();
+
+
+
+/*Consigo Personajes*/
+const getPersonajes = () => {
+  const urlPersonajes = `${urlApi}/v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=20`;
+
+  fetch(urlPersonajes, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const personajes = data.data.results;
+      displayPersonajes(personajes);
+    })
+    .catch((error) => console.error('Error fetching personajes:', error));
+};
+
+const displayPersonajes = (personajes) => {
+  personajesContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar nuevos resultados
+
+  personajes.forEach(personaje => {
+    const personajeHTML = `
+    <div class="rounded-lg w-60 overflow-hidden text-black transition-transform duration-300 ease-in-out hover:text-red-500 transform hover:scale-105">
+      <img class="w-auto h-96 object-cover shadow-2xl hover:shadow-2xl transition-transform duration-300 ease-in-out cursor-pointer"src="${personaje.thumbnail.path}.${personaje.thumbnail.extension}">
+      <h2 class="mt-8 text-sm font-bold text-center">${personaje.name}</h2>
+    </div>
+    `;
+    personajesContainer.insertAdjacentHTML('beforeend', personajeHTML);
+  });
+};
+getPersonajes();
+
+
+
+/*Busqueda por nombre de comics
+searchButton.addEventListener('click', () => {
+  const nombrePersonaje = searchInput.value.trim();
+  if (nombrePersonaje) {
+    buscarPersonajePorNombre(nombrePersonaje);
+  } else {
+    alert('Por favor, ingresa un nombre de personaje');
+  }
+});
+*/
+
+
+/*const buscarPersonajePorNombre = (nombre) => {
+  const urlPersonaje = `${urlApi}/v1/public/characters?name=${nombre}&ts=${ts}&apikey=${publicKey}&hash=${hash}`;
+
+  fetch(urlPersonaje, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      if (data.data.results.length > 0) {
+        const personaje = data.data.results[0];
+        const personajeId = personaje.id;
+        obtenerComicsPorPersonaje(personajeId);
+      } else {
+        alert('Personaje no encontrado');
+      }
+    })
+    .catch(error => console.error('Error buscando personaje:', error));
+};*/
+
+
+/*const obtenerComicsPorPersonaje = (personajeId) => {
+  const urlComics = `${urlApi}/v1/public/characters/${personajeId}/comics?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=20`;
+
+  fetch(urlComics, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      const comics = data.data.results;
+      displayComics(comics);
+    })
+    .catch(error => console.error('Error buscando cómics:', error));
+};
+
+
+
+Ejemplo de uso de la función, uttilice a Spider-Man 
+const characterId = '1009610';
+getComicsByCharacter(characterId);
+ */
+
+
+/**/
+const searchButton = document.getElementById('search-button');
+const searchInput = document.getElementById('input-search');
+const searchType = document.getElementById('search-type');
+const searchSort = document.getElementById('search-sort');
+
+searchButton.addEventListener('click', () => {
+  const query = searchInput.value.trim();
+  const type = searchType.value;
+  const order = searchSort.value;
+
+  if (query) {
+    if (type === 'comics') {
+      buscarComicsPorNombre(query, order);
+    } else if (type === 'characters') {
+      buscarPersonajesPorNombre(query, order);
+    }
+  } else {
+    alert('Por favor, ingresa un nombre para buscar');
+  }
+});
+
+
+/*Comics por nombre*/
+const buscarComicsPorNombre = (nombre, order) => {
+  let urlComics = `${urlApi}/v1/public/comics?titleStartsWith=${nombre}&ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=20`;
+
+  fetch(urlComics, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      let comics = data.data.results;
+      
+      // Ordenar los cómics
+      comics = ordenarResultados(comics, order);
+      
+      displayComics(comics);  // Mostrar cómics en pantalla
+    })
+    .catch(error => console.error('Error buscando cómics:', error));
+};
+
+/*Personajes por nombre*/
+const buscarPersonajesPorNombre = (nombre, order) => {
+  let urlPersonajes = `${urlApi}/v1/public/characters?nameStartsWith=${nombre}&ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=20`;
+
+  fetch(urlPersonajes, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      let personajes = data.data.results;
+
+      // Ordenar personajes
+      personajes = ordenarResultados(personajes, order);
+
+      displayPersonajes(personajes);  // Mostrar personajes en pantalla
+    })
+    .catch(error => console.error('Error buscando personajes:', error));
+};
+
+/*FILTROS mas nuevos, mas viejos, a-z, z-a*/
+const obtenerComics = (orden) => {
+  let orderBy = 'title'
+
+  // Establecer el valor de orderBy según la selección del usuario
+  if (orden === 'byOlder') {
+    orderBy = 'focDate'; // Cambia esto si hay un valor específico para más viejo
+  } else if (orden === 'byNewer') {
+    orderBy = '-focDate'; // Cambia esto si hay un valor específico para más nuevo
+  } else if (orden === 'a-z') {
+    orderBy = 'title';
+  } else if (orden === 'z-a') {
+    orderBy = '-title';
+  }
+
+  // Construir la URL con orderBy
+  const urlComics = `${urlApi}/v1/public/comics?ts=${ts}&apikey=${publicKey}&hash=${hash}&orderBy=${orderBy}&limit=20`;
+
+  fetch(urlComics)
+    .then(response => response.json())
+    .then(data => {
+      const comics = data.data.results;
+      displayComics(comics);
+    })
+    .catch(error => console.error('Error fetching comics:', error));
+};
+
+const buscarComics = () => {
+  const orden = document.getElementById('search-sort').value; // Obtener valor del filtro
+  obtenerComics(orden); // Pasar el valor a obtenerComics
+};
+
+document.getElementById('search-button').addEventListener('click', buscarComics);
+
+
+
+/*Buttons navegación de páginas*/
+let currentPage = 1;
+let totalPages = 0;
+const limit = 20; 
+
+const fetchComics = async (page) => {
+  const offset = (page - 1) * limit;
+  const urlComics = `${urlApi}/v1/public/comics?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
+
+  try {
+    const response = await fetch(urlComics);
+    if (!response.ok) {
+      throw new Error('Error al obtener cómics');
+    }
+    
+    const data = await response.json();
+    totalPages = Math.ceil(data.data.total / limit); 
+    displayComics(data.data.results); 
+    updatePaginationButtons();
+  } catch (error) {
+    console.error('Error al obtener cómics:', error);
+  }
+};
+
+const updatePaginationButtons = () => {
+  document.getElementById('btn-first-page').disabled = currentPage === 1;
+  document.getElementById('btn-prev-page').disabled = currentPage === 1;
+  document.getElementById('btn-next-page').disabled = currentPage === totalPages;
+  document.getElementById('btn-last-page').disabled = currentPage === totalPages;
+  document.getElementById('btn-first-page-bottom').disabled = currentPage === 1;
+  document.getElementById('btn-prev-page-bottom').disabled = currentPage === 1;
+  document.getElementById('btn-next-page-bottom').disabled = currentPage === totalPages;
+  document.getElementById('btn-last-page-bottom').disabled = currentPage === totalPages;
+  
+  document.getElementById('current-page').textContent = `PÁGINA ${currentPage}`;
+  document.getElementById('current-page-bottom').textContent =`PÁGINA ${currentPage}`;
+};
+
+/*listeners button páginado*/
+document.getElementById('btn-first-page').addEventListener('click', () => {
+  currentPage = 1;
+  fetchComics(currentPage);
+});
+
+document.getElementById('btn-first-page-bottom').addEventListener('click', () => {
+  currentPage = 1;
+  fetchComics(currentPage);
+});
+
+
+
+document.getElementById('btn-prev-page').addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    fetchComics(currentPage);
+  }
+});
+document.getElementById('btn-prev-page-bottom').addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    fetchComics(currentPage);
+  }
+});
+
+
+
+document.getElementById('btn-next-page').addEventListener('click', () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    fetchComics(currentPage);
+  }
+});
+
+document.getElementById('btn-next-page-bottom').addEventListener('click', () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    fetchComics(currentPage);
+  }
+});
+
+
+
+document.getElementById('btn-last-page').addEventListener('click', () => {
+  currentPage = totalPages;
+  fetchComics(currentPage);
+});
+
+document.getElementById('btn-last-page-bottom').addEventListener('click', () => {
+  currentPage = totalPages;
+  fetchComics(currentPage);
+});
+
+
+
+/*initialize App*/
+const initializeApp = async () => {
+  obtenerComics('a-z');
+  mostrarPantallaComics();
+  await fetchComics(currentPage);
+};
+initializeApp();
+
+
+
+
