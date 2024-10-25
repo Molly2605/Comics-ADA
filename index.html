@@ -23,13 +23,13 @@
 
   <!--MAIN-->
   <main>
-    <div class="container mx-auto p-4">
-      <h2 class="text-2xl py-8 font-extrabold">Búsqueda</h2>
+    <div id="filter-comics" class="container mx-auto p-4">
+      <h2 class="text-2xl py-8 font-extrabold">Buscar cómics</h2>
       <div class="relative inline-flex items-center w-full">
-        <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+        <i class="fa-solid fa-magnifying-glass" ></i>
         <input class="w-full md:w-1/2 h-8 p-7 outline-none border-b-2 border-black text-xl bg-gray-100" type="text"
-          name="input-search" placeholder="Ingresá tu búsqueda" id="input-search" />
-        <button id="search-button"
+          placeholder="Ingresá tu búsqueda" id="search-input-comics" />
+        <button id="search-button-comics"
           class="bg-black text-white p-3 border-none rounded-sm mb-5 text-xl cursor-pointer hover:bg-red-800 ml-10">
           BUSCAR
         </button>
@@ -38,33 +38,60 @@
       <div class="flex flex-col md:flex-row items-center justify-start md:space-x-8 mb-6">
         <div class="flex items-center">
           <div>
-            <label class="text-xl font-extrabold text-gray-500 ml-5">TIPO</label>
-            <select class="text-xl border-none outline-none font-extrabold ml-2" id="search-type">
-              <option value="comics">COMICS</option>
-              <option value="characters">PERSONAJES</option>
-            </select>
+            <button id="change-to-characters" class="bg-black text-white p-3 border-none rounded-sm mb-5 text-xl cursor-pointer hover:bg-red-800 ml-10">Quiero buscar personajes</button>          
           </div>
           <div class="flex items-center mt-4 md:mt-0">
             <label for="order" class="text-xl font-extrabold text-gray-500 ml-10">ORDEN</label>
-            <select name="search-filter" class="text-xl border-none outline-none font-extrabold ml-2" id="search-sort">
-              <option value="a-z" id="a-z">A-Z</option>
-              <option value="z-a" id="z-a">Z-A</option>
-              <option value="byNewer" id="byNewer">Más nuevos</option>
-              <option value="byOlder" id="byOlder">Más viejos</option>
+            <select name="order" class="text-xl border-none outline-none font-extrabold ml-2" id="sort-comics">
+              <option value="title">A-Z</option>
+              <option value="-title">Z-A</option>
+              <option value="onsaleDate">Fecha ascendente</option>
+              <option value="-onsaleDate">Fecha descendente</option>
+              <option value="issueNumber"># ascendente</option>
+              <option value="-issueNumber"># descendente</option>
             </select>
           </div>
         </div>
       </div>
-      <div class="w-full flex flex-col">
-        <h3 class="text-2xl py-8 font-extrabold">Resultados</h3>
-        <h4 class="text-sm font-extrabold text-gray-600">RESULTADOS</h4>
-      </div>
     </div>
 
+    <div id="filter-characters" class="container mx-auto p-4">
+      <h2 class="text-2xl py-8 font-extrabold">Buscar personajes</h2>
+      <div class="relative inline-flex items-center w-full">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="w-full md:w-1/2 h-8 p-7 outline-none border-b-2 border-black text-xl bg-gray-100" type="text"
+          placeholder="Ingresá tu búsqueda" id="search-input-characters" />
+        <button id="search-button-characters"
+          class="bg-black text-white p-3 border-none rounded-sm mb-5 text-xl cursor-pointer hover:bg-red-800 ml-10">
+          BUSCAR
+        </button>
+      </div>
 
-    <!--PAGINATION-->
+      <div class="flex flex-col md:flex-row items-center justify-start md:space-x-8 mb-6">
+        <div class="flex items-center">
+          <div>
+            <button id="change-to-comics" class="bg-black text-white p-3 border-none rounded-sm mb-5 text-xl cursor-pointer hover:bg-red-800 ml-10">Quiero buscar comics</button>
+          </div>
+          <div class="flex items-center mt-4 md:mt-0">
+            <label for="order" class="text-xl font-extrabold text-gray-500 ml-10">ORDEN</label>
+            <select name="order" class="text-xl border-none outline-none font-extrabold ml-2" id="sort-characters">
+              <option value="name">A-Z</option>
+              <option value="-name">Z-A</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <section class="w-full flex flex-col container mx-auto p-4">
-      <section class="w-full flex flex-col mt-10 container mx-auto p-4">
+
+      <!--Display clicked comic-->
+      <div id="comic-spotlight"></div>
+      <!--Display clicked character-->
+      <div id="character-spotlight"></div>
+
+      <!--Pagination top-->
+      <div class="w-full flex flex-col mt-10 container mx-auto p-4">
         <div class="flex gap-2.5 justify-center">
           <button id="btn-first-page"
             class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
@@ -77,7 +104,7 @@
           </button>
 
 
-          <span id="current-page" class="text-black font-extrabold mx-4 justify-center p-5">PÁGINA 1</span>
+          <span id="current-page" class="text-black font-extrabold mx-4  p-5">PÁGINA 1</span>
 
 
           <button id="btn-next-page"
@@ -90,18 +117,20 @@
             <i class="fas fa-angle-double-right"></i>
           </button>
         </div>
-      </section>
+      </div>
 
+      <!--Display comics-->
+      <div id="comics-container" class="flex flex-wrap gap-7 justify-center"></div>
 
-      <!--COMICS y PERSONAJES-->
-      <section>
-        <div id="comics">
-          <div id="comic-container" class="flex flex-wrap gap-7 justify-center"></div>
-          <div id="personajes-container" class="flex flex-wrap gap-7 justify-center"></div>
-        </div>
-      </section>
-      <!--FIN COMICS y PERSONAJES-->
-      
+      <!--Display characters-->
+      <div id="characters-container" class="flex flex-wrap gap-7 justify-center"></div>
+
+      <!--Spinner on load-->
+      <div id="loading" class="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-300 bg-opacity-80 flex items-center justify-center text-center hidden">
+        <i class="fas fa-solid fa-spider text-9xl animate-ping"></i>
+      </div>
+
+      <!--Pagination bottom-->
       <div class="flex flex-row justify-center mt-10 container mx-auto p-4 gap-1.5">
         <button id="btn-first-page-bottom"
           class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
@@ -113,7 +142,7 @@
           <i class="fas fa-chevron-left"></i>
         </button>
 
-        <span id="current-page-bottom"class="text-black font-extrabold mx-4 justify-center p-5">PÁGINA 1 </span>
+        <span id="current-page-bottom" class="text-black font-extrabold mx-4 justify-center p-5">PÁGINA 1 </span>
 
         <button id="btn-next-page-bottom"
           class="bg-black text-white p-4 border-none mb-5 cursor-pointer hover:bg-red-800 w-16 h-16 flex items-center justify-center">
@@ -126,10 +155,6 @@
         </button>
       </div>
     </section>
-    <div
-      class="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-300 bg-opacity-80 flex items-center justify-center text-center hidden">
-      <i class="fas fa-spider"></i>
-    </div>
   </main>
 
   <!-- Footer -->
