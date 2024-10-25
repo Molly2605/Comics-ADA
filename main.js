@@ -27,7 +27,7 @@ let lastPageBottom = document.getElementById('btn-last-page-bottom');
 let currentPageDisplay = document.getElementById('current-page');
 let currentPageBottomDisplay = document.getElementById('current-page-bottom');
 
-const root = "http://gateway.marvel.com";
+const root = "https://gateway.marvel.com";
 const comicsEndpoint = root + "/v1/public/comics";
 const charactersEndpoint = root + "/v1/public/characters";
 const publicKey = "74f0cbbf5b058f085a7c652c6030d2a7";
@@ -163,7 +163,7 @@ const showCharacters = (characters) => {
   for(const character of characters) {
     const characterHTML = `
     <div class="rounded-lg w-60 overflow-hidden text-black transition-transform duration-300 ease-in-out hover:text-red-500 transform hover:scale-105 cursor-pointer" onclick="handleShowCharacter(${character.id})">
-      <img class="w-auto h-96 object-cover shadow-2xl hover:shadow-2xl transition-transform duration-300 ease-in-out" src="${character.thumbnail.path.replace('http://', 'https://')}.${character.thumbnail.extension}">
+      <img class="w-auto h-96 object-cover shadow-2xl hover:shadow-2xl transition-transform duration-300 ease-in-out" src="${character.thumbnail.path.replace('http', 'https:')}.${character.thumbnail.extension}">
       <h2 class="mt-8 text-sm font-bold text-center">${character.name}</h2>
     </div>
     `;
@@ -174,7 +174,7 @@ const showCharacters = (characters) => {
 const showComicSpotlight = async(comic) => {
   comicSpotlight.innerHTML = `
     <div class="bg-white p-4 rounded-lg shadow-lg">
-      <img src="${comic.thumbnail.path}.${comic.thumbnail.extension}" alt="${comic.title}" class="w-auto h-96 object-cover mb-4">
+      <img src="${comic.thumbnail.path.replace('http', 'https:')}.${comic.thumbnail.extension}" alt="${comic.title}" class="w-auto h-96 object-cover mb-4">
       <h2 class="text-xl font-bold">${comic.title}</h2>
       <p><strong>Fecha de lanzamiento:</strong> ${comic.dates[0]?.date.replaceAll("-","/").substring(0,10) || 'No disponible'}</p>
       <p><strong>Creadores:</strong> ${comic.creators.items.map(creator=>creator.name + " (" + creator.role + ")").join(", ") || 'No disponible'}</p>
@@ -189,7 +189,7 @@ const showComicSpotlight = async(comic) => {
 const showCharacterSpotlight = async(character) => {
   characterSpotlight.innerHTML = `
     <div class="bg-white p-4 rounded-lg shadow-lg">
-      <img src="${character.thumbnail.path}.${character.thumbnail.extension}" alt="${character.name}" class="w-auto h-96 object-cover mb-4">
+      <img src="${character.thumbnail.path.replace('http', 'https:')}.${character.thumbnail.extension}" alt="${character.name}" class="w-auto h-96 object-cover mb-4">
       <h2 class="text-xl font-bold">${character.name}</h2>
       <p><strong>Descripción:</strong> ${character.description || 'No disponible'}</p>
       <p><strong>Cómics en los que aparece:</strong> ${character.comics.items.map(comic=>comic.name).join(", ") || 'No disponible'}</p>
